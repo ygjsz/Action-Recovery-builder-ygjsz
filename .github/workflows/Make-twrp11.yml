@@ -1,4 +1,4 @@
-name: Normal
+name: TWRP-11
 
 on:
   workflow_dispatch:
@@ -6,31 +6,31 @@ on:
       MANIFEST_URL:
         description: 'MANIFEST_URL'
         required: true
-        default: 'git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git'
+        default: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git'
       MANIFEST_BRANCH:
         description: 'LIBRARY_BRANCH'
         required: true
-        default: 'twrp-9.0'
+        default: 'twrp-11'
       DEVICE_TREE_URL:
         description: 'DEVICE_TREE_URL'
         required: true
-        default: 'https://github.com/azwhikaru/twrp_device_xiaomi_archytas'
+        default: 'https://github.com/MollySophia/android_device_qualcomm_qrd855-TWRP'
       DEVICE_TREE_BRANCH:
         description: 'DEVICE_TREE_BRANCH'
         required: true
-        default: 'twrp-9.0'
+        default: 'android-10'
       DEVICE_PATH:
         description: 'DEVICE_PATH'
         required: true
-        default: 'device/xiaomi/Archytas'
+        default: 'device/qualcomm/msmnile'
       DEVICE_NAME:
         description: 'DEVICE_NAME'
         required: true
-        default: 'Archytas'
+        default: 'msmnile'
       MAKEFILE_NAME:
         description: 'MAKEFILE_NAME'
         required: true
-        default: 'omni_Archytas'
+        default: 'twrp_msmnile'
 
 jobs:
   build:
@@ -97,7 +97,8 @@ jobs:
         source build/envsetup.sh
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng 
         make clean
-        make recoveryimage -j$(nproc --all)        
+        mka recoveryimage
+        ls out/target/product/${{ github.event.inputs.DEVICE_NAME }}
       
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
